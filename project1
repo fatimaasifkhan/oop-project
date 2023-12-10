@@ -852,203 +852,125 @@ public:
             }
         }
     }
-   
-    void coursewithdraw() {}
 
-        //string oldRoll;
-        //cout << "Enter the current roll number of the student you want to edit: ";
-        //cin.ignore();
-        //getline(cin, oldRoll);
+    void coursewithdraw() {
 
-        //ifstream file("text.txt");
-        //if (!file.is_open()) {
-        //    cout << "File not opened" << endl;
-        //    return;
-        //}
+        
+        string oldRoll;
+        cout << "Enter the current roll number of the student you want to edit: ";
+        cin.ignore();
+        getline(cin, oldRoll);
 
-        //ofstream tempfile("tempfile.txt");
-        //if (!tempfile.is_open()) {
-        //    cout << "File not opened" << endl;
-        //    file.close();
-        //    return;
-        //}
+        ifstream file("withdraw.txt");
+        if (!file.is_open()) {
+            cout << "File not opened" << endl;
+            return;
+        }
 
-        //bool found = false;
-        //string write;
+        ofstream tempfile("temp.txt");
+        if (!tempfile.is_open()) {
+            cout << "File not opened" << endl;
+            file.close();
+            return;
+        }
 
-        //while (getline(file, write)) {
-        //    istringstream c(write);
-        //    string roll;
-        //    if (c >> roll) {
-        //        if (roll == oldRoll) {
-        //            found = true;
+        bool found = false;
+        string write;
 
-        //            cout << "Current information for student with roll number " << oldRoll << ":" << endl;
-        //            cout << write << endl;
+        while (getline(file, write)) {
+            istringstream c(write);
+            string roll;
+            if (c >> roll) {
+                if (roll == oldRoll) {
+                    found = true;
 
-        //            int age, marks, contact;
-        //            string name, newCourses, attendance, rollnum;
+                    cout << "Current information for student with roll number " << oldRoll << ":" << endl;
+                    cout << write << endl;
 
-        //            cout << "Enter new courses for the student (separated by commas): ";
-        //            cin.ignore(); // Ignore any newline characters in the input buffer
-        //            getline(cin, newCourses);
+                    int age, marks, contact;
+                    string name, courses, rollnum;
 
-        //            // Extract other information from the existing record
-        //            c >> name >> age >> marks >> contact >> rollnum >> attendance;
+                    // Extract information from the existing record
+                    c >> name >> age >> marks >> contact >> rollnum >> ws;
 
-        //            // Write modified information to the temporary file
-        //            tempfile << rollnum << "  \t" << name << "\t\t" << age << "\t" << marks << "\t" << newCourses << "\t\t" << attendance << endl;
-        //        }
-        //        else {
-        //            // Write unchanged information to the temporary file
-        //            tempfile << write << endl;
-        //        }
-        //    }
-        //    else {
-        //        // Write unchanged information to the temporary file
-        //        tempfile << write << endl;
-        //    }
-        //}
+                    // Read the courses until the end of the line
+                    getline(c, courses);
 
-        //file.close();
-        //tempfile.close();
+                    // Prompt the user to enter the course to remove
+                    string courseToRemove;
+                    cout << "Enter the course to remove: ";
+                    getline(cin, courseToRemove);
 
-        //if (!found) {
-        //    cout << "Student with roll number " << oldRoll << " not found" << endl;
-        //    std::remove("tempfile.txt"); // Delete the temporary file
-        //}
-        //else {
-        //    // Replace the original file with the temporary file
-        //    if (std::remove("text.txt") != 0) {
-        //        cout << "Error: File cannot be deleted" << endl;
-        //    }
-        //    if (rename("tempfile.txt", "text.txt") != 0) {
-        //        cout << "Error: File cannot be renamed" << endl;
-        //    }
-        //    else {
-        //        cout << "Student information updated successfully" << endl;
-        //    }
-        //}
-    ///*}*/
-    //    string oldRoll;
-    //    cout << "Enter the current roll number of the student you want to edit: ";
-    //    cin.ignore();
-    //    getline(cin, oldRoll);
+                    // Find and remove the specified course as a substring
+                    size_t pos = courses.find(courseToRemove);
+                    while (pos != string::npos) {
+                        courses.erase(pos, courseToRemove.length());
+                        pos = courses.find(courseToRemove);
+                    }
 
-    //    ifstream file("withdraw.txt");
-    //    if (!file.is_open()) {
-    //        cout << "File not opened" << endl;
-    //        return ;
-    //    }
-
-    //    ofstream tempfile("tempfile.txt");
-    //    if (!tempfile.is_open()) {
-    //        cout << "File not opened" << endl;
-    //        file.close();
-    //        return ;
-    //    }
-
-    //    bool found = false;
-    //    string write;
-
-    //    while (getline(file, write)) {
-    //        istringstream c(write);
-    //        string roll;
-    //        if (c >> roll) {
-    //            if (roll == oldRoll) {
-    //                found = true;
-
-    //                cout << "Current information for student with roll number " << oldRoll << ":" << endl;
-    //                cout << write << endl;
-
-    //                int age, marks, contact;
-    //                string name, courses, rollnum;
-
-    //                // Extract information from the existing record
-    //                c >> name >> age >> marks >> contact >> rollnum >> ws;
-
-    //                // Read the courses until the end of the line
-    //                getline(c, courses);
-
-    //                // Prompt the user to enter the course to remove
-    //                string courseToRemove;
-    //                cout << "Enter the course to remove: ";
-    //                getline(cin, courseToRemove);
-
-    //                size_t pos = courses.find(courseToRemove);
-    //                if (pos != string::npos) {
-    //                    // Remove the specified course from the existing courses
-    //                    courses.erase(pos, courseToRemove.length());
-
-    //                    // Reconstruct the line with the modified courses and write to the temporary file
-    //                    tempfile << roll << "\t\t" << name << "\t\t" << age << "\t" << marks << "\t\t\t" << contact << "\t\t" << courses << endl;
-    //                }
-    //                else {
-    //                    // If the course was not found, write the original line to the temporary file
-    //                    tempfile << write << endl;
-    //                }
-    //            }
-    //            else {
-    //                // Write unchanged information to the temporary file
-    //                tempfile << write << endl;
-    //            }
-    //        }
-    //    }
-
-    //    file.close();
-    //    tempfile.close();
-
-    //    if (!found) {
-    //        cout << "Student with roll number " << oldRoll << " not found" << endl;
-    //        std::remove("tempfile.txt"); // Delete the temporary file
-    //    }
-    //    else {
-    //        // Replace the original file with the temporary file
-    //        if (std::remove("withdraw.txt") != 0) {
-    //            cout << "Error: File cannot be deleted" << endl;
-    //        }
-    //        if (rename("tempfile.txt", "withdraw.txt") != 0) {
-    //            cout << "Error: File cannot be renamed" << endl;
-    //        }
-    //        else {
-    //            cout << "Student information updated successfully" << endl;
-    //        }
-    //    }
-
-    //
-    //}
-    void withdrawmenu() {
-            int k = 0;
-
-            while (k != 4) {
-                cout << endl;
-                cout << "**__________________Course Withdrawl__________________**" << endl;
-                cout << "1.Available courses" << endl;
-                cout << "2.drop a course" << endl;
-                cout << "3.exit" << endl;
-
-                cout << "Please enter the choice" << endl;
-                cin >> k;
-
-                switch (k) {
-                case 1:
-
-                    displaycourse();
-                    break;
-                case 2:
-                    displaycourse();
-                    coursewithdraw();
-                    displaycourse();
-                    break;
-                case 3:
-                    cout << "Exiting course registration menu......" << endl;
-                    break;
-                default:
-                    cout << "Invalid key, try again" << endl;
-                    break;
+                    // Reconstruct the line with the modified courses and write to the temporary file
+                    tempfile << roll << "\t\t" << name << "\t\t" << age << "\t\t" << marks << "\t\t" << contact << "\t\t" << courses << endl;
+                }
+                else {
+                    // Write unchanged information to the temporary file
+                    tempfile << write << endl;
                 }
             }
         }
+
+        file.close();
+        tempfile.close();
+
+        if (!found) {
+            cout << "Student with roll number " << oldRoll << " not found" << endl;
+            std::remove("temp.txt"); // Delete the temporary file
+        }
+        else {
+            // Replace the original file with the temporary file
+            if (std::remove("withdraw.txt") != 0) {
+                cout << "Error: File cannot be deleted" << endl;
+            }
+            if (rename("temp.txt", "withdraw.txt") != 0) {
+                cout << "Error: File cannot be renamed" << endl;
+            }
+            else {
+                cout << "Student information updated successfully" << endl;
+            }
+        }
+   }
+    void withdrawmenu() {
+        int k = 0;
+
+        while (k != 4) {
+            cout << endl;
+            cout << "**__________________Course Withdrawl__________________**" << endl;
+            cout << "1.Available courses" << endl;
+            cout << "2.drop a course" << endl;
+            cout << "3.exit" << endl;
+
+            cout << "Please enter the choice" << endl;
+            cin >> k;
+
+            switch (k) {
+            case 1:
+
+                displaycourse();
+                break;
+            case 2:
+                displaycourse();
+                coursewithdraw();
+                displaycourse();
+                break;
+            case 3:
+                cout << "Exiting course registration menu......" << endl;
+                break;
+            default:
+                cout << "Invalid key, try again" << endl;
+                break;
+            }
+        }
+    }
+
 
 
         void CourseMenu() {
@@ -1498,6 +1420,92 @@ public:
 
 
     };
+    class validator{};
+   
+        class FileHandler {
+        private:
+            std::string filename;
+            std::ios_base::openmode mode;
+            std::string* data;
+            size_t dataSize;
+
+        public:
+            // Constructor
+            FileHandler(const std::string& filename, std::ios_base::openmode mode) : filename(filename), mode(mode), data(nullptr), dataSize(0) {}
+
+            // Destructor
+            ~FileHandler() {
+                delete[] data;
+            }
+
+            // Method to open the file
+            bool openFile() {
+                std::ifstream file(filename, mode);
+                if (!file.is_open()) {
+                    std::cerr << "Error: Unable to open the file '" << filename << "'" << std::endl;
+                    return false;
+                }
+
+                // Read the file into a dynamic array
+                std::string line;
+                while (std::getline(file, line)) {
+                    addData(line);
+                }
+
+                file.close();
+                return true;
+            }
+
+            // Method to close the file
+            void closeFile() {
+                // No need to explicitly close the file in C++, as it's automatically closed when the ifstream or ofstream goes out of scope
+            }
+
+            // Method to write data to the file
+            void writeToFile() {
+                std::ofstream file(filename, mode);
+                if (!file.is_open()) {
+                    std::cerr << "Error: Unable to open the file '" << filename << "'" << std::endl;
+                    return;
+                }
+
+                // Write the data array to the file
+                for (size_t i = 0; i < dataSize; ++i) {
+                    file << data[i] << '\n';
+                }
+
+                file.close();
+            }
+
+            // Method to read data from the file
+            void printData() const {
+                for (size_t i = 0; i < dataSize; ++i) {
+                    std::cout << data[i] << std::endl;
+                }
+            }
+
+            // Method to add data to the dynamic array
+            void addData(const std::string& line) {
+                // Create a new dynamic array with increased size
+                std::string* newData = new std::string[dataSize + 1];
+
+                // Copy existing data to the new array
+                for (size_t i = 0; i < dataSize; ++i) {
+                    newData[i] = data[i];
+                }
+
+                // Add the new line
+                newData[dataSize] = line;
+
+                // Delete the old array and update the pointer
+                delete[] data;
+                data = newData;
+
+                // Increment the size
+                ++dataSize;
+            }
+        };
+   
 
     int main() {
         SystemManager obj;
