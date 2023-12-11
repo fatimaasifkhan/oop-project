@@ -4,7 +4,6 @@
 #include<sstream>
 #include<cstdlib>
 using namespace std;
-
 class student {
 protected:
     string name;
@@ -15,9 +14,7 @@ protected:
     int contact;
     string courses;    string coursen;// the new course student wants to register
     string att;//new attendnce
-
 public:
-
     student() {
         name = " ";
         rollnum = " ";
