@@ -1,10 +1,10 @@
 //orignal2.0
-
 #include<iostream>
 #include<fstream>
 #include<sstream>
 #include<cstdlib>
 using namespace std;
+
 class student {
 protected:
     string name;
@@ -52,8 +52,8 @@ public:
 
     ~student() {}
 
-    void add() {
-        ofstream outfile("textt.txt", ios::app);
+    void add(const string& filename) {
+        ofstream outfile(filename, ios::app);
         if (!outfile.is_open()) {
             cout << "File not opened\n";
         }
@@ -140,6 +140,8 @@ public:
 
         bool f1 = false;
         string write;
+        getline(file, write);
+        outfile << write << endl;
 
         while (getline(file, write)) {
             istringstream c(write);
@@ -162,9 +164,69 @@ public:
             if (rename("temp.txt", "textt.txt") != 0) {
                 cout << "Error, file cannot be renamed" << endl;
             }
+            else {
+                cout << "Student removed successfully" << endl;
+            }
         }
     }
+    //if we want to remove from other files too
+   /* void remove(const string& filename) {
+        string rn;
+        cout << "Enter the rollnum which you want to remove" << endl;
+        cin.ignore();
+        getline(cin, rn);
+        if (rn.size() > 4) {
+            cout << "Error: Roll number should not exceed four digits." << endl;
+            return;
+        }
 
+        ifstream file(filename);
+        if (!file.is_open()) {
+            cout << "file not opened" << endl;
+            return;
+        }
+
+        ofstream outfile("temp.txt");
+        if (!outfile.is_open()) {
+            cout << "file not opened" << endl;
+            file.close();
+            return;
+        }
+
+        bool studentFound = false;
+        string write;
+        getline(file, write);
+        outfile << write << endl;
+
+        while (getline(file, write)) {
+            istringstream c(write);
+            string roll;
+            if (c >> roll) {
+                if (roll == rn) {
+                    studentFound = true;
+                    continue;
+                }
+            }
+            outfile << write << endl;
+        }
+        file.close();
+        outfile.close();
+
+        if (studentFound) {
+            if (std::remove(filename.c_str()) != 0) {
+                cout << "Error, file cannot be deleted" << endl;
+            }
+            if (rename("temp.txt", filename.c_str()) != 0) {
+                cout << "Error, file cannot be renamed" << endl;
+            }
+            else {
+                cout << "Student removed successfully from " << filename << endl;
+            }
+        }
+        else {
+            cout << "Student with rollnum " << rn << " not found in " << filename << endl;
+        }
+    }*/
 
     void edit() {
         string oldRoll;
@@ -206,9 +268,8 @@ public:
                     string name, courses, attendance, rollnum;
 
                     cout << "Enter student's details: " << endl;
-                    //  cin.ignore(); // Ignore any newline characters in the input buffer
+                  
                     cout << "name: ";
-                    //cin.ignore();
                     getline(cin, name);
                     cout << "rollnum: ";
                     getline(cin, rollnum);
@@ -303,8 +364,7 @@ public:
 
                     cout << "Enter name of courses: ";
                     getline(cin, coursen);
-                    // tempfile << roll << "\t" << name << "\t" << age << "\t" << contact << "\t" << marks << "\t" << coursen << "\t" << attendance << endl;
-
+                    
                      // Write modified information to the temporary file
                     tempfile << write << coursen << endl;
                 }
@@ -442,8 +502,7 @@ public:
             cout << "Please enter the choice" << endl;
             cin >> k;
 
-            switch (k) {
-            case 1:
+            switch (k) {            case 1:
 
                 displaymarks();
                 break;
@@ -478,7 +537,7 @@ public:
             switch (k) {
             case 1:
                 display();
-                add();
+                add("textt.txt");
                 display();
                 break;
             case 2:
@@ -1203,6 +1262,8 @@ int main() {
 
     return 0;
 }
+
+
 
 
 
