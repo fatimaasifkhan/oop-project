@@ -4,9 +4,7 @@
 #include<fstream>
 #include<sstream>
 #include<cstdlib>
-
 using namespace std;
-
 class student {
 protected:
     string name;
