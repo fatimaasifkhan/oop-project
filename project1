@@ -4,6 +4,7 @@
 #include<sstream>
 #include<cstdlib>
 using namespace std;
+
 class student {
 protected:
     string name;
@@ -14,7 +15,9 @@ protected:
     int contact;
     string courses;    string coursen;// the new course student wants to register
     string att;//new attendnce
+
 public:
+
     student() {
         name = " ";
         rollnum = " ";
@@ -435,6 +438,10 @@ public:
 
         bool found = false;
         string write;
+        // Read and write the header line
+        getline(file, write);
+        tempfile << write << endl;
+
 
         while (getline(file, write)) {
             istringstream c(write);
@@ -487,23 +494,22 @@ public:
     }
     void MarksMenu() {
         int k = 0;
-
         while (k != 3) {
-            displaymarks();
             cout << endl;
             cout << "**__________________MARKS MENU__________________**" << endl;
-            cout << "1.DISPLAY MARKS" << endl;
-            cout << "2.ASSIGN MARKS" << endl;
-            cout << "3.BACK" << endl;
+            cout << "1.display marks" << endl;
+            cout << "2.assign marks" << endl;
+            cout << "3.back" << endl;
 
             cout << "Please enter the choice" << endl;
             cin >> k;
 
-            switch (k) {            case 1:
-
+            switch (k) {          
+            case 1:
                 displaymarks();
                 break;
             case 2:
+                displaymarks();
                 assignmarks();
                 displaymarks();
                 break;
@@ -789,9 +795,8 @@ public:
 
     void coursewithdraw() {
 
-
         string oldRoll;
-        cout << "Enter the current roll number of the student you want to edit: ";
+        cout << "Enter the current roll number of the student to withdraw course: ";
         cin.ignore();
         getline(cin, oldRoll);
         if (oldRoll.size() > 4) {
@@ -879,7 +884,7 @@ public:
     void withdrawmenu() {
         int k = 0;
 
-        while (k != 4) {
+        while (k != 3) {
             cout << endl;
             cout << "**__________________Course Withdrawl__________________**" << endl;
             cout << "1.enrolled courses" << endl;
@@ -908,13 +913,10 @@ public:
             }
         }
     }
-
-
-
     void CourseMenu() {
         int k = 0;
 
-        while (k != 4) {
+        while (k != 5) {
             cout << endl;
             cout << "**__________________Course Registration__________________**" << endl;
             cout << "1.Available courses" << endl;
@@ -922,7 +924,6 @@ public:
             cout << "3.edit course details" << endl;
             cout << "4.register a course" << endl;
             cout << "5.exit" << endl;
-
             cout << "Please enter the choice" << endl;
             cin >> k;
 
@@ -1028,7 +1029,8 @@ public:
                     getline(cin, att);
 
                     // Preserve unchanged information and only modify attendance
-                    tempfile << roll << "\t\t" << name << "\t\t" << age << "\t\t" << contact << "\t\t\t" << courses << "\t\t\t" << att << endl;
+                    tempfile << roll << "\t\t" << name << "\t\t" << age << "\t\t" << contact << "\t\t\t" << courses << "\t\t\t" << att << "\t\t" << endl;
+
                 }
                 else {
                     // Write unchanged information to the temporary file
@@ -1152,8 +1154,6 @@ public:
 
 
 };
-class validator {};
-
 class FileHandler {
 private:
     string filename;
@@ -1234,33 +1234,74 @@ public:
         ++dataSize;
     }
 };
+template <typename T>
+class Validator {
+private:
+    T input;
+    bool (*typeValidator)(const T&);
+    bool (*lengthValidator)(const T&);
 
+public:
+    Validator(const T& input_value, bool (*type_validator)(const T&), bool (*length_validator)(const T&))
+        : input(input_value), typeValidator(type_validator), lengthValidator(length_validator) {}
+
+    bool validate() const {
+        return typeValidator(input) && lengthValidator(input);
+    }
+
+
+    // Example type validator for string
+    bool isStringTypeValid(const string& input) {
+
+        return true;
+    }
+
+    // Example length validator for string
+    bool isStringLengthValid(const string& input) {
+
+        return input.length() >= 3 && input.length() <= 10;
+    }
+};
 
 int main() {
     SystemManager obj;
     obj.SystemMenu();
-    FileHandler fileHandler("withdraw.txt", ios::in);
 
-    // Open the file
-    //if (fileHandler.openFile()) {
-    //    // Print the data from the file
-    //    cout << "Data from the file:" << endl;
-    //    fileHandler.printData();
+    //FileHandler fileHandler("withdraw.txt", ios::in);
+    //// Open the file
+    ////if (fileHandler.openFile()) {
+    ////    // Print the data from the file
+    ////    cout << "Data from the file:" << endl;
+    ////    fileHandler.printData();
 
-    //    // Modify the data 
-    //    fileHandler.addData("New line added.");
+    ////    // Modify the data 
+    ////    fileHandler.addData("New line added.");
 
-    //    // Write the modified data back to the file
-    //    fileHandler.writeToFile();
+    ////    // Write the modified data back to the file
+    ////    fileHandler.writeToFile();
 
-    //    // Close the file 
-    //    fileHandler.closeFile();
-    //}
+    ////    // Close the file 
+    ////    fileHandler.closeFile();
+    ////}
+  /*  cout << "Enter a string: ";
+    string user_input;
+    cin >> user_input;
+
+
+    Validator<string>validator(
+        user_input,
+        isStringTypeValid,
+        isStringLengthValid
+    );
+
+    if (validator.validate()) {
+        std::cout << "Input is valid." << std::endl;
+    }
+    else {
+        std::cout << "Input is invalid." << std::endl;
+    }*/
+
 
     return 0;
 }
-
-
-
-
 
